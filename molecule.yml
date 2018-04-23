@@ -1,0 +1,27 @@
+---
+dependency:
+  name: galaxy
+
+driver:
+  name: docker
+docker:
+  containers:
+    - name: mysql-backup-role-${BRANCH_NAME}-${BUILD_NUMBER}
+      image: centos
+      image_version: 7.3.1611
+      build_image: yes
+      privileged: yes
+      cap_add:
+        - SYS_ADMIN
+      #environment:
+        #http_proxy: "http://reformmgmtproxyout.reform.hmcts.net:8080/"
+verifier:
+  name: testinfra
+
+ansible:
+  playbook: tests/playbook.yml
+  verbose: yes
+  group_vars:
+    all:
+      mysql_backup_password: secur3f0rT3st0nly
+      mysql_admin_password: secur3f0rT3st0nly

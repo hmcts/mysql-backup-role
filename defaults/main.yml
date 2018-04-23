@@ -1,0 +1,30 @@
+---
+
+#
+# use credentials when creating users
+#
+mysql_use_credentials: true
+
+#
+# MySQL Users
+#
+mysql_users:
+ - { name: "{{ mysql_backup_user }}", host: localhost, password: "{{ mysql_backup_password }}", priv: '*.*:RELOAD,REPLICATION CLIENT,SUPER,PROCESS' }
+ - { name: "{{ mysql_backup_user }}", host: localhost, password: "{{ mysql_backup_password }}", priv: 'mysql.backup_progress:CREATE,INSERT,DROP,UPDATE' }
+ - { name: "{{ mysql_backup_user }}", host: localhost, password: "{{ mysql_backup_password }}", priv: 'mysql.backup_history:CREATE,INSERT,SELECT,DROP,UPDATE' }
+
+#
+# Backup settings
+#
+
+scripts_backup_dir: "/usr/backups/scripts/"
+mysql_backup_dir: "/var/lib/mysql/backups/"
+mysql_backup_dir_owner: root
+mysql_backup_dir_group: root
+
+mysql_backup_permission: "0755"
+
+mysql_backup_days: 14
+
+# db backup ignore list "information_schema mysql"
+mysql_backup_db_ignore: "information_schema test"

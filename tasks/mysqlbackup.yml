@@ -1,0 +1,34 @@
+---
+
+# create mysql scripts dir
+- name: setup directory structure for mysql backup scripts
+  file:
+    path: "{{ scripts_backup_dir }}"
+    owner: "{{ mysql_backup_dir_owner }}"
+    mode: "{{ mysql_backup_permission }}"
+    state: directory
+
+# create mysql backup dir
+- name: create mysql backup dir
+  file:
+    path: "{{ mysql_backup_dir }}"
+    owner: "{{ mysql_backup_dir_owner }}"
+    #group: "{{ mysql_backup_dir_group }}"
+    mode: "{{ mysql_backup_permission }}"
+    state: directory
+
+# copy template
+- name: Copy mysqlbackup file to scripts
+  template:
+    src: mysqlbackup.bash.j2
+    dest: /usr/backups/scripts/mysqlbackup.bash
+    owner: "{{ mysql_backup_dir_owner }}"
+    mode: 0755
+
+- name: Copy mysqlbackup file to cron tab
+  cron:
+    user: "{{ mysql_backup_dir_owner }}"
+    job: /usr/backups/scripts/mysqlbackup.bash
+    hour: 20
+    minute: 0
+    name: mysql_backup

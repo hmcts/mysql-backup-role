@@ -1,0 +1,12 @@
+---
+# Make sure crontab is installed
+- name: install crontab
+  yum:
+    name: cronie
+    state: present
+
+
+
+# Configure MySQL Backup
+- name: Configure MySQL Backup
+  include: mysqlbackup.yml
